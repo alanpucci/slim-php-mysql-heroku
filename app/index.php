@@ -19,13 +19,14 @@ require_once './controllers/PDFController.php';
 require_once './middlewares/Verificadora.php';
 require_once './db/AccesoDatos.php';
 
+require __DIR__ . '/../vendor/autoload.php';
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
+
 $app = AppFactory::create();
 $app->addErrorMiddleware(true, true, true);
-$app->setBasePath('/app');
 $app->addBodyParsingMiddleware();
 
 date_default_timezone_set('America/Argentina/Buenos_Aires');
