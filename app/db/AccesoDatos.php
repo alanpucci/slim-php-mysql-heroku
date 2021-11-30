@@ -1,4 +1,6 @@
 <?php
+use Slim\Psr7\Environment;
+
 class AccesoDatos
 {
     private static $objAccesoDatos;

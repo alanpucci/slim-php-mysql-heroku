@@ -1,0 +1,524 @@
+{
+	"info": {
+		"_postman_id": "d01e85a4-8456-4914-ac4b-420207aa71f6",
+		"name": "Comanda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST: Crear empleado",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzgwNjkwNDUsImV4cCI6MTY0NDA2OTA0NSwiYXVkIjoiZGJhZjdiM2FmY2QzMmQ5N2U5ZDE1ZTNkMzIwMWY5NGIxMTU2ODVhMSIsImRhdGEiOnRydWUsImFwcCI6IlRlc3QgSldUIn0.iX743jsxGo9J-W_MJWSrrj00Bb5mR2Ti0l6_FJNnE7Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "nombre",
+							"value": "Javier el Mozo",
+							"type": "text"
+						},
+						{
+							"key": "puesto",
+							"value": "mozo",
+							"type": "text"
+						},
+						{
+							"key": "sector",
+							"value": "candyBar",
+							"type": "text"
+						},
+						{
+							"key": "usuario",
+							"value": "javi123",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/comanda/empleados",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"comanda",
+						"empleados"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET: Traer empleados",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzY3MjQwMzAsImV4cCI6MTY0MjcyNDAzMCwiYXVkIjoiZGJhZjdiM2FmY2QzMmQ5N2U5ZDE1ZTNkMzIwMWY5NGIxMTU2ODVhMSIsImRhdGEiOiJqYXZpMTIzIiwiYXBwIjoiVGVzdCBKV1QifQ.CpvJMzU5klm-H7LoFiCp9C3fQsLOPnDtMk0Edg9xrjw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "token",
+							"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzY0MTk0MjQsImV4cCI6MTY0MjQxOTQyNCwiYXVkIjoiZGJhZjdiM2FmY2QzMmQ5N2U5ZDE1ZTNkMzIwMWY5NGIxMTU2ODVhMSIsImRhdGEiOiJqYXZpMTIzIiwiYXBwIjoiVGVzdCBKV1QifQ.X4GcsFx9D1oZgscCjLXVNA2Sq10ggLFSmdaOo8EKOvA",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/comanda/empleados",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"comanda",
+						"empleados"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET: Traer productos",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzgwNjkwNDUsImV4cCI6MTY0NDA2OTA0NSwiYXVkIjoiZGJhZjdiM2FmY2QzMmQ5N2U5ZDE1ZTNkMzIwMWY5NGIxMTU2ODVhMSIsImRhdGEiOnRydWUsImFwcCI6IlRlc3QgSldUIn0.iX743jsxGo9J-W_MJWSrrj00Bb5mR2Ti0l6_FJNnE7Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/comanda/productos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"comanda",
+						"productos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: Crear producto",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzgwNjkwNDUsImV4cCI6MTY0NDA2OTA0NSwiYXVkIjoiZGJhZjdiM2FmY2QzMmQ5N2U5ZDE1ZTNkMzIwMWY5NGIxMTU2ODVhMSIsImRhdGEiOnRydWUsImFwcCI6IlRlc3QgSldUIn0.iX743jsxGo9J-W_MJWSrrj00Bb5mR2Ti0l6_FJNnE7Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "precio",
+							"value": "15.5",
+							"type": "text"
+						},
+						{
+							"key": "nombre",
+							"value": "Coca-Cola",
+							"type": "text"
+						},
+						{
+							"key": "tipo",
+							"value": "Bebida",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/comanda/productos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"comanda",
+						"productos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET: Traer mesas",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzgwNjkwNDUsImV4cCI6MTY0NDA2OTA0NSwiYXVkIjoiZGJhZjdiM2FmY2QzMmQ5N2U5ZDE1ZTNkMzIwMWY5NGIxMTU2ODVhMSIsImRhdGEiOnRydWUsImFwcCI6IlRlc3QgSldUIn0.iX743jsxGo9J-W_MJWSrrj00Bb5mR2Ti0l6_FJNnE7Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/comanda/mesas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"comanda",
+						"mesas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: Crear Mesa",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzgwNjkwNDUsImV4cCI6MTY0NDA2OTA0NSwiYXVkIjoiZGJhZjdiM2FmY2QzMmQ5N2U5ZDE1ZTNkMzIwMWY5NGIxMTU2ODVhMSIsImRhdGEiOnRydWUsImFwcCI6IlRlc3QgSldUIn0.iX743jsxGo9J-W_MJWSrrj00Bb5mR2Ti0l6_FJNnE7Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "estado",
+							"value": "Cerrado",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/comanda/mesas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"comanda",
+						"mesas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET: Traer comandas",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzgwNjkwNDUsImV4cCI6MTY0NDA2OTA0NSwiYXVkIjoiZGJhZjdiM2FmY2QzMmQ5N2U5ZDE1ZTNkMzIwMWY5NGIxMTU2ODVhMSIsImRhdGEiOnRydWUsImFwcCI6IlRlc3QgSldUIn0.iX743jsxGo9J-W_MJWSrrj00Bb5mR2Ti0l6_FJNnE7Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/comanda/comandas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"comanda",
+						"comandas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: Crear comanda",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzgwNjkwNDUsImV4cCI6MTY0NDA2OTA0NSwiYXVkIjoiZGJhZjdiM2FmY2QzMmQ5N2U5ZDE1ZTNkMzIwMWY5NGIxMTU2ODVhMSIsImRhdGEiOnRydWUsImFwcCI6IlRlc3QgSldUIn0.iX743jsxGo9J-W_MJWSrrj00Bb5mR2Ti0l6_FJNnE7Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"warning": "This is a duplicate header and will be overridden by the Content-Type header generated by Postman.",
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mesa\": \"a0b13\",\r\n    \"nombre_cliente\": \"pepito\",\r\n    \"tiempo_preparacion\": 30,\r\n    \"pedidos\": [\r\n        {\r\n            \"nombre\": \"Cerveza\",\r\n            \"cantidad\":2\r\n        },\r\n        {\r\n            \"nombre\": \"Papas\",\r\n            \"cantidad\": 1\r\n        }\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:666/comanda/comandas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"comanda",
+						"comandas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "usuario",
+							"value": "javi123",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/comanda/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"comanda",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: Cargar foto",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzgwNjkwNDUsImV4cCI6MTY0NDA2OTA0NSwiYXVkIjoiZGJhZjdiM2FmY2QzMmQ5N2U5ZDE1ZTNkMzIwMWY5NGIxMTU2ODVhMSIsImRhdGEiOnRydWUsImFwcCI6IlRlc3QgSldUIn0.iX743jsxGo9J-W_MJWSrrj00Bb5mR2Ti0l6_FJNnE7Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "archivo",
+							"type": "file",
+							"src": "/C:/Users/alane/Downloads/animal.jpg"
+						},
+						{
+							"key": "comanda_id",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/comanda/fotos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"comanda",
+						"fotos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT: Modificar estado comanda",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzgwNjkwNDUsImV4cCI6MTY0NDA2OTA0NSwiYXVkIjoiZGJhZjdiM2FmY2QzMmQ5N2U5ZDE1ZTNkMzIwMWY5NGIxMTU2ODVhMSIsImRhdGEiOnRydWUsImFwcCI6IlRlc3QgSldUIn0.iX743jsxGo9J-W_MJWSrrj00Bb5mR2Ti0l6_FJNnE7Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "estado",
+							"value": "Servido",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/comanda/comandas/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"comanda",
+						"comandas",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: Cargar CSV",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzgwNjkwNDUsImV4cCI6MTY0NDA2OTA0NSwiYXVkIjoiZGJhZjdiM2FmY2QzMmQ5N2U5ZDE1ZTNkMzIwMWY5NGIxMTU2ODVhMSIsImRhdGEiOnRydWUsImFwcCI6IlRlc3QgSldUIn0.iX743jsxGo9J-W_MJWSrrj00Bb5mR2Ti0l6_FJNnE7Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "archivo",
+							"type": "file",
+							"src": "/C:/xampp/htdocs/comanda/csv.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/comanda/cargarCSV",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"comanda",
+						"cargarCSV"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST: Guardar CSV",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MzgwODUxNzcsImV4cCI6MTY0NDA4NTE3NywiYXVkIjoiZGJhZjdiM2FmY2QzMmQ5N2U5ZDE1ZTNkMzIwMWY5NGIxMTU2ODVhMSIsImRhdGEiOnRydWUsImFwcCI6IlRlc3QgSldUIn0.6eYnzlSUfa__lzMGvkyHkod32uM5Ar3vCHK2EqnzQ-w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/comanda/guardarCSV",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"comanda",
+						"guardarCSV"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

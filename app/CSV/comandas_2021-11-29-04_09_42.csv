@@ -1,0 +1,11 @@
+id,fecha_creacion,mesa,nombre_cliente,estado,tiempo_preparacionpedidos0nombre,pedidos0cantidad,pedidos0tipo,pedidos0preciopedidos1nombre,pedidos1cantidad,pedidos1tipo,pedidos1preciopedidos2nombre,pedidos2cantidad,pedidos2tipo,pedidos2preciopedidos3nombre,pedidos3cantidad,pedidos3tipo,pedidos3preciopedidos4nombre,pedidos4cantidad,pedidos4tipo,pedidos4preciopedidos5nombre,pedidos5cantidad,pedidos5tipo,pedidos5preciopedidos6nombre,pedidos6cantidad,pedidos6tipo,pedidos6preciopedidos7nombre,pedidos7cantidad,pedidos7tipo,pedidos7preciopedidos8nombre,pedidos8cantidad,pedidos8tipo,pedidos8preciopedidos9nombre,pedidos9cantidad,pedidos9tipo,pedidos9precio
+1,"2021-11-15 22:11:36",4a78d,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350
+2,"2021-11-15 22:11:36",ac8da,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350
+3,"2021-11-15 22:11:36",3c5d8,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350
+4,"2021-11-15 22:11:36",4f66a,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350
+5,"2021-11-15 22:11:36",80eda,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350
+6,"2021-11-15 22:11:36",4a78d,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350
+7,"2021-11-15 22:11:36",ac8da,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350
+8,"2021-11-15 22:11:36",3c5d8,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350
+9,"2021-11-15 22:11:36",4f66a,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350
+10,"2021-11-15 22:11:36",80eda,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350,Coca-Cola,3,bebida,15.5
