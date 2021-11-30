@@ -62,7 +62,7 @@ $app->group('/productos', function (RouteCollectorProxy $group) {
 });
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
-  $group->get('[/]', \MesaController::class . ':TraerTodos')->add(\Verificadora::class . ':ValidarEmpleado');
+  $group->get('[/]', \MesaController::class . ':TraerTodos')->add(\Verificadora::class . ':ValidarSocio');
   $group->get('/{id}', \MesaController::class . ':ConsultarDemora');
   $group->post('[/]', \MesaController::class . ':CargarUno')->add(\Verificadora::class . ':ValidarEmpleado');
   $group->put('/{id}', \MesaController::class . ':CerrarMesa')->add(\Verificadora::class . ':ValidarSocio');
