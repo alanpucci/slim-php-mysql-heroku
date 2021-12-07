@@ -26,7 +26,7 @@ class Verificadora{
             if(!empty($header)){
                 $token = trim(explode("Bearer", $header)[1]);
                 $data = AutentificadorJWT::ObtenerData($token);
-                if($data == "mozo"){
+                if($data->puesto == "mozo"){
                     return $handler->handle($request);
                 }
                 throw new Exception("Usuario no autorizado");
@@ -47,7 +47,7 @@ class Verificadora{
             if(!empty($header)){
                 $token = trim(explode("Bearer", $header)[1]);
                 $data = AutentificadorJWT::ObtenerData($token);
-                if($data == "socio"){
+                if($data->puesto == "socio"){
                     return $handler->handle($request);
                 }
                 throw new Exception("Usuario no autorizado");
@@ -68,7 +68,7 @@ class Verificadora{
             if(!empty($header)){
                 $token = trim(explode("Bearer", $header)[1]);
                 $data = AutentificadorJWT::ObtenerData($token);
-                if($data == "socio" || $data == "cervecero" || $data == "mozo" || $data == "cocinero" || $data == "bartender"){
+                if($data->puesto == "socio" || $data->puesto == "cervecero" || $data->puesto == "mozo" || $data->puesto == "cocinero" || $data->puesto == "bartender"){
                     return $handler->handle($request);
                 }
                 throw new Exception("Usuario no autorizado");

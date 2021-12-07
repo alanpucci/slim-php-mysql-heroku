@@ -8,14 +8,13 @@ class ComandaController extends Comanda implements IApiUsable
   {
     try {
       $parametros =  json_decode($request->getBody(), true);
-      if(!isset($parametros["mesa"]) || !isset($parametros["nombre_cliente"]) || !isset($parametros["pedidos"]) || !isset($parametros["tiempo_preparacion"])){
+      if(!isset($parametros["mesa"]) || !isset($parametros["nombre_cliente"]) || !isset($parametros["pedidos"])){
         throw new Exception("Parametros invalidos");
       }
       $comanda = new Comanda();
       $comanda->mesa = $parametros["mesa"];
       $comanda->nombre_cliente = $parametros["nombre_cliente"];
       $comanda->pedidos = $parametros["pedidos"];
-      $comanda->tiempo_preparacion = $parametros["tiempo_preparacion"];
       $respuesta = $comanda->crearComanda();
       $payload = json_encode(array("mensaje" => "Comanda creada exitosamente", "id" => $respuesta));
       $response->getBody()->write($payload);
@@ -47,14 +46,14 @@ class ComandaController extends Comanda implements IApiUsable
   {
     try {
       $comanda = Comanda::obtenerUno($args["id"])[0];
-      $parametros =  $request->getParsedBody();
       if ($comanda) {
-        if(!isset($parametros["estado"])){
-          throw new Exception("Parametros invalidos");
+        $parametros =  $request->getParsedBody();
+        $cobrar=false;
+        if(isset($parametros["cobrar"])){
+          $cobrar=true;
         }
-        $comanda->estado = $parametros["estado"];
-        $respuesta = $comanda->modificarComanda();
-        $payload = json_encode(array("mensaje" => "Comanda modificada exitosamente", "id" => $respuesta));
+        $respuesta = $comanda->modificarComanda($cobrar);
+        $payload = json_encode(array("mensaje" => $respuesta));
         $response->getBody()->write($payload);
         return $response
           ->withHeader('Content-Type', 'application/json');
@@ -68,18 +67,26 @@ class ComandaController extends Comanda implements IApiUsable
     }
   }
 
-  public function ModificarListos($request, $response, $args)
-  {
+  public function ConsultarDemora($request, $response, $args){
     try {
-        Comanda::modificarComandas();
-        $payload = json_encode(array("mensaje" => "Comandas modificadas a Listos para servir"));
+      $comanda = Comanda::obtenerUnoPorCodigo($args["id"])[0];
+      if($comanda){
+        $parametros = $request->getQueryParams();
+        if(!isset($parametros["mesa_id"])){
+          throw new Exception("Se requiere el id de la mesa");
+        }
+        $demora = Comanda::calcularDemora($comanda, $parametros["mesa_id"]);
+        $payload = json_encode(array("mensaje" => "El tiempo de demora de tu pedido es: ".$demora." minutos"));
         $response->getBody()->write($payload);
         return $response
           ->withHeader('Content-Type', 'application/json');
+      }else{
+        throw new Exception("No existe una comanda con ese codigo");
+      }
     } catch (\Throwable $th) {
-      $response->getBody()->write(json_encode(array("mensaje" => "ERROR, " . $th->getMessage())));
+      $response->getBody()->write(json_encode(array("mensaje" => "ERROR, ".$th->getMessage())));
       return $response
-        ->withHeader('Content-Type', 'application/json');
+      ->withHeader('Content-Type', 'application/json');
     }
   }
 

@@ -12,6 +12,7 @@ use Slim\Routing\RouteContext;
 
 require_once './controllers/EmpleadoController.php';
 require_once './controllers/ProductoController.php';
+require_once './controllers/PedidoController.php';
 require_once './controllers/MesaController.php';
 require_once './controllers/EncuestaController.php';
 require_once './controllers/ComandaController.php';
@@ -56,6 +57,11 @@ $app->group('/encuestas', function (RouteCollectorProxy $group) {
 
 $app->post('/pdf', \PDFController::class . ':CrearPDF')->add(\Verificadora::class . ':ValidarSocio');
 
+$app->group('/pedidos', function (RouteCollectorProxy $group) {
+  $group->get('[/]', \PedidoController::class . ':TraerTodos')->add(\Verificadora::class . ':ValidarEmpleado');
+  $group->put('/{id}', \PedidoController::class . ':ModificarUno')->add(\Verificadora::class . ':ValidarEmpleado');
+});
+
 $app->group('/productos', function (RouteCollectorProxy $group) {
   $group->get('[/]', \ProductoController::class . ':TraerTodos')->add(\Verificadora::class . ':ValidarEmpleado');
   $group->post('[/]', \ProductoController::class . ':CargarUno')->add(\Verificadora::class . ':ValidarEmpleado');
@@ -63,19 +69,21 @@ $app->group('/productos', function (RouteCollectorProxy $group) {
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \MesaController::class . ':TraerTodos')->add(\Verificadora::class . ':ValidarSocio');
-  $group->get('/{id}', \MesaController::class . ':ConsultarDemora');
   $group->post('[/]', \MesaController::class . ':CargarUno')->add(\Verificadora::class . ':ValidarEmpleado');
   $group->put('/{id}', \MesaController::class . ':CerrarMesa')->add(\Verificadora::class . ':ValidarSocio');
 });
 
 $app->get('/mesaUsada', \MesaController::class . ':MesaUsada')->add(\Verificadora::class . ':ValidarSocio');
 
+$app->get('/pedidosConDemora', \PedidoController::class . ':PedidosConDemora')->add(\Verificadora::class . ':ValidarSocio');
+
+$app->get('/pedidosATiempo', \PedidoController::class . ':PedidosATiempo')->add(\Verificadora::class . ':ValidarSocio');
 
 $app->group('/comandas', function (RouteCollectorProxy $group) {
   $group->get('[/]', \ComandaController::class . ':TraerTodos')->add(\Verificadora::class . ':ValidarEmpleado');
+  $group->get('/{id}', \ComandaController::class . ':ConsultarDemora');
   $group->post('[/]', \ComandaController::class . ':CargarUno')->add(\Verificadora::class . ':ValidarMozo');
-  $group->put('/{id}', \ComandaController::class . ':ModificarUno')->add(\Verificadora::class . ':ValidarEmpleado');
-  $group->put('[/]', \ComandaController::class . ':ModificarListos')->add(\Verificadora::class . ':ValidarMozo');
+  $group->put('/{id}', \ComandaController::class . ':ModificarUno')->add(\Verificadora::class . ':ValidarMozo');
 });
 
 // Run app

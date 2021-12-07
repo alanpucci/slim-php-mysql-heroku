@@ -55,24 +55,6 @@ class MesaController extends Mesa implements IApiUsable
       }
     }
 
-    public function ConsultarDemora($request, $response, $args){
-      try {
-        $parametros = $request->getQueryParams();
-        if(!isset($parametros["comanda_id"])){
-          throw new Exception("Se requiere el id de la mesa");
-        }
-        $demora = Mesa::calcularDemora($parametros["comanda_id"]);
-        $payload = json_encode(array("mensaje" => gettype($demora)=="string" ? $demora : "El tiempo de demora de tu pedido es: ".$demora." minutos"));
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
-      } catch (\Throwable $th) {
-        $response->getBody()->write(json_encode(array("mensaje" => "ERROR, ".$th->getMessage())));
-        return $response
-        ->withHeader('Content-Type', 'application/json');
-      }
-    }
-
     public function CerrarMesa($request, $response, $args)
   {
     try {

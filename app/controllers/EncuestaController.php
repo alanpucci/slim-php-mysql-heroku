@@ -1,5 +1,7 @@
 <?php
 require_once './models/Encuesta.php';
+require_once './models/Comanda.php';
+require_once './models/Mesa.php';
 
 class EncuestaController extends Encuesta
 {
@@ -8,7 +10,9 @@ class EncuestaController extends Encuesta
       try {
         $parametros = $request->getParsedBody();
         if(!isset($parametros["mesa_puntaje"]) || !isset($parametros["restaurant_puntaje"]) || !isset($parametros["mozo_puntaje"]) ||
-           !isset($parametros["cocinero_puntaje"]) || !isset($parametros["descripcion"]) || !isset($parametros["comanda_id"])){
+           !isset($parametros["cocinero_puntaje"]) || !isset($parametros["descripcion"]) || !isset($parametros["comanda_id"]) || !isset($parametros["mesa_id"]) ||
+           !($parametros["mesa_puntaje"] >=0 && $parametros["mesa_puntaje"] <=10) || !($parametros["restaurant_puntaje"] >=0 && $parametros["restaurant_puntaje"] <=10) ||
+           !($parametros["mozo_puntaje"] >=0 && $parametros["mozo_puntaje"] <=10) || !($parametros["cocinero_puntaje"] >=0 && $parametros["cocinero_puntaje"] <=10)){
                throw new Exception("Parametros invalidos");
            }
         $encuesta = new Encuesta();
@@ -18,6 +22,7 @@ class EncuestaController extends Encuesta
         $encuesta->cocinero_puntaje = $parametros["cocinero_puntaje"];
         $encuesta->descripcion = $parametros["descripcion"];
         $encuesta->comanda_id = $parametros["comanda_id"];
+        $encuesta->mesa_id = $parametros["mesa_id"];
         $respuesta = $encuesta->crearEncuesta();
         $payload = json_encode(array("mensaje" => $respuesta));
         $response->getBody()->write($payload);

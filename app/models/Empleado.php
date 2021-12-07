@@ -70,12 +70,18 @@ class Empleado
 
     public function validarUsuario(){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT usuario, clave, p.nombre as puesto FROM empleados e LEFT JOIN puestos p ON e.puesto_id = p.id WHERE usuario=:usuario");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT e.nombre, usuario, clave, p.nombre as puesto, s.nombre as sector, e.estado FROM empleados e 
+                                                        LEFT JOIN puestos p ON e.puesto_id = p.id 
+                                                        LEFT JOIN sectores s ON e.sector_id = s.id
+                                                        WHERE usuario=:usuario");
         $consulta->bindValue(':usuario', $this->usuario);
         $consulta->execute();
         $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
+        if($usuario["estado"] == "inactivo"){
+            throw new Exception("Empleado dado de baja");
+        }
         if(password_verify($this->clave, $usuario["clave"])){
-            return $usuario["puesto"];
+            return array('puesto'=>$usuario["puesto"],'sector'=>$usuario["sector"], 'nombre'=>$usuario["nombre"]);
         }
     }
 }

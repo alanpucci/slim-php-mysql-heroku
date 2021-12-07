@@ -7,20 +7,25 @@ class PDF
         $pdf = new Fpdf(); 
         $pdf->AddPage();
 
+        $pdf->Image('./assets/logo.png',10,8,33);
+        $pdf->Ln(10);
+        $pdf->Cell(40);
+
         $pdf->SetFont('Helvetica','',16);
         $pdf->Cell(60,4,'Alan Ezequiel Pucci',0,1,'C');
+        $pdf->Cell(40);
         $pdf->SetFont('Helvetica','',8);
         $pdf->Cell(60,4,'La comanda',0,1,'C');
+        $pdf->Cell(40);
         $pdf->Cell(60,4,'Listado de comandas',0,1,'C');
-        $pdf->Ln();
+        $pdf->Ln(10);
 
         $pdf->SetFont('Arial', '', 7);
         $pdf->Cell(25,10, 'Fecha creacion', 1);
         $pdf->Cell(15,10, 'Mesa', 1);
         $pdf->Cell(20,10, 'Cliente', 1);
-        $pdf->Cell(25,10, 'Estado', 1);
-        $pdf->Cell(25,10, 'Preparacion(min)', 1);
-        $pdf->Cell(70,10, 'Pedidos', 1);
+        $pdf->Cell(15,10, 'Estado', 1);
+        $pdf->Cell(90,10, 'Pedidos', 1);
         $pdf->Ln();
         
         // PRODUCTOS
@@ -28,13 +33,12 @@ class PDF
             $pdf->Cell(25,10, $item->fecha_creacion, 1);
             $pdf->Cell(15,10, $item->mesa, 1);
             $pdf->Cell(20,10, $item->nombre_cliente, 1);
-            $pdf->Cell(25,10, $item->estado, 1);
-            $pdf->Cell(25,10, $item->tiempo_preparacion, 1);
+            $pdf->Cell(15,10, $item->estado, 1);
             $stringPedidos="";
             foreach ($item->pedidos as $key) {
                 $stringPedidos = $stringPedidos.$key["nombre"]."(".$key["cantidad"]."), ";
             }
-            $pdf->Cell(70,10, $stringPedidos, 1);
+            $pdf->Cell(90,10, $stringPedidos, 1);
             $pdf->Ln();
         }
         $pdf->Output($this->destinoPDF(),'f');

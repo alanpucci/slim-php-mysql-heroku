@@ -70,28 +70,4 @@ class Mesa
         $consulta->execute();
         return;
     }
-
-    public static function calcularDemora($id){
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT c.tiempo_preparacion, c.fecha_creacion, e.id as estado FROM mesas m 
-                                                        LEFT JOIN comandas c ON c.mesa_id = m.id 
-                                                        LEFT JOIN estado_comandas e ON e.id = c.estado_id
-                                                        WHERE c.id_codigo=:id");
-        $consulta->bindValue(':id', $id);
-        $consulta->execute();
-        $respuesta = $consulta->fetch(PDO::FETCH_ASSOC);
-        $date = new DateTime("now");
-        $ahora = $date->format('Y-m-d H:i:s');
-        $time = new DateTime($respuesta["fecha_creacion"]);
-        $time->add(new DateInterval('PT' . $respuesta["tiempo_preparacion"] . 'M'));
-        $tiempoPreparacion = $time->format('Y-m-d H:i:s');
-        if($ahora>$tiempoPreparacion){
-            if($respuesta["estado"] == 1 || $respuesta["estado"] == 2){
-                return "Tu pedido ya esta listo para servir";
-            }
-            throw new Exception("Tu pedido ya fue entregado");
-        }
-        $dif = $date->diff($time);
-        return $dif->format('%i');
-    }
 }

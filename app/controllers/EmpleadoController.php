@@ -82,7 +82,7 @@ class EmpleadoController extends Empleado implements IApiUsable
         $empleado->clave = $parametros["clave"];
         $respuesta = $empleado->validarUsuario();
         if($respuesta){
-          $payload = json_encode(array("mensaje" => "Inicio de sesión exitoso", "token" => AutentificadorJWT::CrearToken($respuesta), "puesto" => $respuesta));
+          $payload = json_encode(array("mensaje" => "Inicio de sesión exitoso", "token" => AutentificadorJWT::CrearToken($respuesta), "usuario" => $respuesta));
           $response->getBody()->write($payload);
           return $response
             ->withHeader('Content-Type', 'application/json');
