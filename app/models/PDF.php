@@ -25,7 +25,7 @@ class PDF
         $pdf->Cell(15,10, 'Mesa', 1);
         $pdf->Cell(20,10, 'Cliente', 1);
         $pdf->Cell(15,10, 'Estado', 1);
-        $pdf->Cell(90,10, 'Pedidos', 1);
+        $pdf->Cell(115,10, 'Pedidos', 1);
         $pdf->Ln();
         
         // PRODUCTOS
@@ -38,7 +38,7 @@ class PDF
             foreach ($item->pedidos as $key) {
                 $stringPedidos = $stringPedidos.$key["nombre"]."(".$key["cantidad"]."), ";
             }
-            $pdf->Cell(90,10, $stringPedidos, 1);
+            $pdf->Cell(115,10, $stringPedidos, 1);
             $pdf->Ln();
         }
         $pdf->Output($this->destinoPDF(),'f');
