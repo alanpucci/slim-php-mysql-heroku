@@ -1,5 +1,6 @@
 <?php
 require_once './models/Comanda.php';
+require_once './middlewares/AutentificadorJWT.php';
 require_once './interfaces/IApiUsable.php';
 
 class ComandaController extends Comanda implements IApiUsable
@@ -7,6 +8,9 @@ class ComandaController extends Comanda implements IApiUsable
   public function CargarUno($request, $response, $args)
   {
     try {
+      $header = $request->getHeaderLine('Authorization');
+      $token = trim(explode("Bearer", $header)[1]);
+      $usuario = AutentificadorJWT::ObtenerData($token);
       $parametros =  json_decode($request->getBody(), true);
       if(!isset($parametros["mesa"]) || !isset($parametros["nombre_cliente"]) || !isset($parametros["pedidos"])){
         throw new Exception("Parametros invalidos");
@@ -15,7 +19,7 @@ class ComandaController extends Comanda implements IApiUsable
       $comanda->mesa = $parametros["mesa"];
       $comanda->nombre_cliente = $parametros["nombre_cliente"];
       $comanda->pedidos = $parametros["pedidos"];
-      $respuesta = $comanda->crearComanda();
+      $respuesta = $comanda->crearComanda($usuario);
       $payload = json_encode(array("mensaje" => "Comanda creada exitosamente", "id" => $respuesta));
       $response->getBody()->write($payload);
       return $response
@@ -47,12 +51,15 @@ class ComandaController extends Comanda implements IApiUsable
     try {
       $comanda = Comanda::obtenerUno($args["id"])[0];
       if ($comanda) {
+        $header = $request->getHeaderLine('Authorization');
+        $token = trim(explode("Bearer", $header)[1]);
+        $usuario = AutentificadorJWT::ObtenerData($token);
         $parametros =  $request->getParsedBody();
         $cobrar=false;
         if(isset($parametros["cobrar"])){
           $cobrar=true;
         }
-        $respuesta = $comanda->modificarComanda($cobrar);
+        $respuesta = $comanda->modificarComanda($cobrar,$usuario);
         $payload = json_encode(array("mensaje" => $respuesta));
         $response->getBody()->write($payload);
         return $response

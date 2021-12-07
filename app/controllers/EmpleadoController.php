@@ -45,6 +45,33 @@ class EmpleadoController extends Empleado implements IApiUsable
       }
     }
 
+    public function TraerTodosPorParam($request, $response, $args)
+    {
+      try {
+        $parametros = $request->getQueryParams();
+        if(isset($parametros["ingreso"])){
+          $lista = Empleado::obtenerTodosPorIngreso();
+        }
+        if(isset($parametros["operacionesPorSector"])){
+          $lista = Empleado::obtenerOperacionesPorSector();
+        }
+        if(isset($parametros["operacionesPorSectorYEmpleado"])){
+          $lista = Empleado::obtenerOperacionesPorSectorYEmpleado();
+        }
+        if(isset($parametros["operacionesPorEmpleado"])){
+          $lista = Empleado::obtenerOperacionesPorEmpleado();
+        }
+        $payload = json_encode(array("lista empleados" => $lista));
+        $response->getBody()->write($payload);
+        return $response
+          ->withHeader('Content-Type', 'application/json');
+      } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode(array("mensaje" => "ERROR, ".$th->getMessage())));
+        return $response
+        ->withHeader('Content-Type', 'application/json');
+      }
+    }
+
     public function ModificarUno($request, $response, $args)
   {
     try {

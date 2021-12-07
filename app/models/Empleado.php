@@ -49,6 +49,49 @@ class Empleado
         return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function obtenerTodosPorIngreso()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT e.id, e.nombre, e.fecha_creacion as fecha_ingreso FROM empleados e");
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function obtenerOperacionesPorSector()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT COUNT(op.sector_id) as cantidad, s.nombre FROM operaciones op LEFT JOIN sectores s ON s.id=op.sector_id GROUP BY op.sector_id");
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function obtenerOperacionesPorSectorYEmpleado()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT COUNT(op.sector_id) as cantidad, s.nombre as sector, s.id as sector_id FROM operaciones op LEFT JOIN sectores s ON s.id=op.sector_id GROUP BY op.sector_id");
+        $consulta->execute();
+        $sectores = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        $nuevoArray = array();
+        foreach ($sectores as $key) {
+            $consulta_empleados = $objAccesoDatos->prepararConsulta("SELECT COUNT(op.empleado_id) as cantidad, e.nombre as empleado FROM operaciones op 
+                LEFT JOIN empleados e ON op.empleado_id=e.id LEFT JOIN sectores s ON op.sector_id=s.id WHERE op.sector_id=:id GROUP BY empleado");
+            $consulta_empleados->bindValue(':id', $key["sector_id"]);
+            $consulta_empleados->execute();
+            $empleados = $consulta_empleados->fetchAll(PDO::FETCH_ASSOC);
+            array_push($key, $empleados);
+            array_push($nuevoArray, $key);
+        }
+        return $nuevoArray;
+    }
+
+    public static function obtenerOperacionesPorEmpleado()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT COUNT(op.empleado_id) as cantidad, e.nombre FROM operaciones op LEFT JOIN empleados e ON e.id=op.empleado_id GROUP BY op.empleado_id");
+        $consulta->execute();
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public static function obtenerUno($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -70,18 +113,21 @@ class Empleado
 
     public function validarUsuario(){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT e.nombre, usuario, clave, p.nombre as puesto, s.nombre as sector, e.estado FROM empleados e 
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT e.id, e.nombre, usuario, clave, p.nombre as puesto, s.nombre as sector, e.estado FROM empleados e 
                                                         LEFT JOIN puestos p ON e.puesto_id = p.id 
                                                         LEFT JOIN sectores s ON e.sector_id = s.id
                                                         WHERE usuario=:usuario");
         $consulta->bindValue(':usuario', $this->usuario);
         $consulta->execute();
         $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
+        if(!$usuario){
+            throw new Exception("Credenciales inválidas");
+        }
         if($usuario["estado"] == "inactivo"){
             throw new Exception("Empleado dado de baja");
         }
         if(password_verify($this->clave, $usuario["clave"])){
-            return array('puesto'=>$usuario["puesto"],'sector'=>$usuario["sector"], 'nombre'=>$usuario["nombre"]);
+            return array('puesto'=>$usuario["puesto"],'sector'=>$usuario["sector"], 'nombre'=>$usuario["nombre"], 'id'=>$usuario["id"]);
         }
     }
 }

@@ -7,7 +7,7 @@ class Comanda
     public $nombre_cliente;
     public $estado;
 
-    public function crearComanda()
+    public function crearComanda($mozo)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $mesa = $objAccesoDatos->prepararConsulta("SELECT id, estado_id FROM mesas WHERE id_codigo=:mesa_id");
@@ -37,6 +37,16 @@ class Comanda
             $mesa->bindValue(':mesa_id', $mesa_result["id"]);
             $mesa->bindValue(':estado_id', 1);
             $mesa->execute();
+            $sector = $objAccesoDatos->prepararConsulta("SELECT * FROM sectores WHERE nombre=:sector");
+            $sector->bindValue(':sector', $mozo->sector);
+            $sector->execute();
+            $sector_result = $sector->fetch(PDO::FETCH_ASSOC);
+            $operacion = $objAccesoDatos->prepararConsulta("INSERT INTO operaciones (empleado_id, comanda_id, sector_id)
+                                                            VALUES (:empleado_id, :comanda_id, :sector_id)");
+            $operacion->bindValue(':empleado_id', $mozo->id);
+            $operacion->bindValue(':comanda_id', $comanda_id);
+            $operacion->bindValue(':sector_id', $sector_result["id"]);
+            $operacion->execute();
             foreach ($this->pedidos as $key) {
                 $producto = $objAccesoDatos->prepararConsulta("SELECT id FROM productos WHERE nombre=:nombre");
                 $producto->bindValue(':nombre', $key["nombre"]);
@@ -55,9 +65,16 @@ class Comanda
         throw new Exception("Error al crear la comanda");
     }
 
-    public function modificarComanda($cobrar)
+    public function modificarComanda($cobrar, $usuario)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT MIN(pe.estado_id) as estado FROM pedidos pe WHERE pe.comanda_id=:id");
+        $consulta->bindValue(':id', $this->id);
+        $consulta->execute();
+        $estado_pedido = $consulta->fetch(PDO::FETCH_ASSOC);
+        if(!$cobrar && $estado_pedido["estado"] != 3){
+            throw new Exception("Todavía hay pedidos que no están listos, no se puede servir la comida!");
+        }
         $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET estado_id=:estado WHERE comanda_id=:id");
         $consulta->bindValue(':id', $this->id);
         $consulta->bindValue(':estado', $cobrar ? 5 : 4);
@@ -66,6 +83,16 @@ class Comanda
         $mesa->bindValue(':mesa_id', $this->mesa_id);
         $mesa->bindValue(':estado_id', $cobrar ? 3 : 2);
         $mesa->execute();
+        $sector = $objAccesoDatos->prepararConsulta("SELECT * FROM sectores WHERE nombre=:sector");
+        $sector->bindValue(':sector', $usuario->sector);
+        $sector->execute();
+        $sector_result = $sector->fetch(PDO::FETCH_ASSOC);
+        $operacion = $objAccesoDatos->prepararConsulta("INSERT INTO operaciones (empleado_id, comanda_id, sector_id)
+                                                            VALUES (:empleado_id, :comanda_id, :sector_id)");
+        $operacion->bindValue(':empleado_id', $usuario->id);
+        $operacion->bindValue(':comanda_id',  $this->id);
+        $operacion->bindValue(':sector_id', $sector_result["id"]);
+        $operacion->execute();
         if(!$cobrar){
             return "La comida fue servida. Buen provecho!";
         }else{
@@ -75,7 +102,7 @@ class Comanda
             $consulta_total->bindValue(':id', $this->id);
             $consulta_total->execute();
             $respuesta = $consulta_total->fetch(PDO::FETCH_ASSOC);
-            return "Se les cobró ".$respuesta["total"]." a los clientes, gracias por elegirnos!";
+            return "Se les cobró $".$respuesta["total"]." a los clientes, gracias por elegirnos!";
         }
     }
 
@@ -83,10 +110,10 @@ class Comanda
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT c.id, c.fecha_creacion,
-                                                     m.id_codigo as mesa, c.nombre_cliente, MAX(pe.id) as pedidos, MIN(pe.estado_id) as estado,
-                                                     MAX(cast(pe.tiempo_preparacion as DateTime)) AS tiempo_estipulado FROM comandas c 
-                                                  LEFT JOIN mesas m ON c.mesa_id = m.id
-                                                  LEFT JOIN pedidos pe ON pe.comanda_id = c.id GROUP BY c.id");
+                                                    m.id_codigo as mesa, c.nombre_cliente, MAX(pe.id) as pedidos, MIN(pe.estado_id) as estado,
+                                                    MAX(cast(pe.tiempo_preparacion as DateTime)) AS tiempo_estipulado FROM comandas c 
+                                                    LEFT JOIN mesas m ON c.mesa_id = m.id
+                                                    LEFT JOIN pedidos pe ON pe.comanda_id = c.id GROUP BY c.id");
         $consulta->execute();
         $comandas = $consulta->fetchAll(PDO::FETCH_CLASS, 'Comanda');
         foreach ($comandas as $key) {
@@ -130,7 +157,7 @@ class Comanda
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT MAX(cast(pe.tiempo_preparacion as DateTime)) AS demora FROM pedidos pe 
                                                         LEFT JOIN comandas c ON c.id=pe.comanda_id AND c.id_codigo=:id_codigo 
-                                                        GROUP BY pe.comanda_id");
+                                                        GROUP BY pe.comanda_id LIMIT 1");
         $consulta->bindValue(':id_codigo', $comanda->id_codigo);
         $consulta->execute();
         $respuesta = $consulta->fetch(PDO::FETCH_ASSOC);
@@ -152,9 +179,17 @@ class Comanda
         $nombre = $foto["name"];
         $destino = "ImagenesComandas/".$idComanda.".".$nombre;
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $comanda = $objAccesoDatos->prepararConsulta("SELECT * FROM comandas WHERE id_codigo=:id");
+        $comanda->bindValue(':id', $idComanda);
+        $comanda->execute();
+        $comanda_result = $comanda->fetch(PDO::FETCH_ASSOC);
+        if(!$comanda_result){
+            throw new Exception("Comanda inexistente");
+        }
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO imagenes (nombre,comanda_id) VALUES(:foto, :comanda_id)");
         $consulta->bindValue(':foto', $nombre);
-        $consulta->bindValue(':comanda_id', $idComanda);
+        $consulta->bindValue(':comanda_id', $comanda_result["id"]);
         $consulta->execute();
         if(move_uploaded_file($foto["tmp_name"], $destino)){
             return "Archivo subido con exito";

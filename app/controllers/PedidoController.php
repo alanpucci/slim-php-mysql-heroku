@@ -9,12 +9,39 @@ class PedidoController extends Pedido
       try {
         $parametros = $request->getQueryParams();
         if(!isset($parametros["estado"])){
-          $parametros["estado"] = "Pendiente";
+          $parametros["estado"] = 1;
         }
         $header = $request->getHeaderLine('Authorization');
         $token = trim(explode("Bearer", $header)[1]);
         $usuario = AutentificadorJWT::ObtenerData($token);
         $lista = Pedido::obtenerTodos($usuario->sector, $parametros["estado"]);
+        $payload = json_encode(array("lista pedidos" => $lista));
+        $response->getBody()->write($payload);
+        return $response
+          ->withHeader('Content-Type', 'application/json');
+      } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode(array("mensaje" => "ERROR, ".$th->getMessage())));
+        return $response
+        ->withHeader('Content-Type', 'application/json');
+      }
+    }
+
+    public function TraerTodosPorParam($request, $response, $args)
+    {
+      try {
+        $parametros = $request->getQueryParams();
+        if(isset($parametros["masVendido"])){
+          $lista = Pedido::productoMasVendido();
+        }
+        if(isset($parametros["menosVendido"])){
+          $lista = Pedido::productoMenosVendido();
+        }
+        if(isset($parametros["demorados"])){
+          $lista = Pedido::obtenerDemorados();
+        }
+        if(isset($parametros["cancelados"])){
+          $lista = Pedido::obtenerCancelados();
+        }
         $payload = json_encode(array("lista pedidos" => $lista));
         $response->getBody()->write($payload);
         return $response
@@ -53,13 +80,13 @@ class PedidoController extends Pedido
               $ahora = $date->format('Y-m-d H:i:s');
               $time = new DateTime($tiempo_preparacion);
               $tiempoPreparacion = $time->format('Y-m-d H:i:s');
-              if($ahora<$tiempoPreparacion){
+              if($parametros["estado"] != 6 && $ahora<$tiempoPreparacion){
                   throw new Exception("El pedido todavía no esta listo para servir");
               }
             }else{
               throw new Exception("Parametros inválidos");
             }
-            Pedido::modificarPedido($pedido, $tiempo_preparacion, $estado);
+            Pedido::modificarPedido($pedido, $tiempo_preparacion, $estado, $data);
             $payload = json_encode(array("mensaje"=>"Pedido modificado exitosamente"));
             $response->getBody()->write($payload);
             return $response

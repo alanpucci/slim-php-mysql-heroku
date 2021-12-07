@@ -40,6 +40,48 @@ class MesaController extends Mesa implements IApiUsable
       }
     }
 
+    public function TraerTodosPorParam($request, $response, $args)
+    {
+      try {
+        $parametros = $request->getQueryParams();
+        if(isset($parametros["masUsada"])){
+          $lista = Mesa::obtenerMasUsada();
+        }
+        if(isset($parametros["menosUsada"])){
+          $lista = Mesa::obtenerMenosUsada();
+        }
+        if(isset($parametros["mayorFacturaTotal"])){
+          $lista = Mesa::obtenerMayorFacturaTotal();
+        }
+        if(isset($parametros["menorFacturaTotal"])){
+          $lista = Mesa::obtenerMenorFacturaTotal();
+        }
+        if(isset($parametros["mayorFactura"])){
+          $lista = Mesa::obtenerMayorFactura();
+        }
+        if(isset($parametros["menorFactura"])){
+          $lista = Mesa::obtenerMenorFactura();
+        }
+        if(isset($parametros["desde"]) && isset($parametros["hasta"])){
+          $lista = Mesa::obtenerTotalEntreFechas($parametros["desde"], $parametros["hasta"]);
+        }
+        if(isset($parametros["mejoresComentarios"])){
+          $lista = Mesa::obtenerMayorPuntaje();
+        }
+        if(isset($parametros["peoresComentarios"])){
+          $lista = Mesa::obtenerMenorPuntaje();
+        }
+        $payload = json_encode(array("listaMesas" => $lista));
+        $response->getBody()->write($payload);
+        return $response
+          ->withHeader('Content-Type', 'application/json');
+      } catch (\Throwable $th) {
+        $response->getBody()->write(json_encode(array("mensaje" => "ERROR, ".$th->getMessage())));
+        return $response
+        ->withHeader('Content-Type', 'application/json');
+      }
+    }
+
     public function MesaUsada($request, $response, $args)
     {
       try {
