@@ -138,7 +138,6 @@ class ComandaController extends Comanda implements IApiUsable
         $comanda->fecha_creacion = $json["fecha_creacion"];
         $comanda->nombre_cliente = $json["nombre_cliente"];
         $comanda->estado = $json["estado"];
-        $comanda->tiempo_preparacion = $json["tiempo_preparacion"];
         $pedidos = array();
         for ($i = 0; $i < 99; $i++) {
           if (empty($json["pedidos" . $i . "nombre"])) {
@@ -147,7 +146,10 @@ class ComandaController extends Comanda implements IApiUsable
           array_push($pedidos, ["nombre" => $json["pedidos" . $i . "nombre"], "cantidad" => $json["pedidos" . $i . "cantidad"]]);
         }
         $comanda->pedidos = $pedidos;
-        $respuesta = $comanda->crearComanda();
+        $empleado = new Empleado();
+        $empleado->id = 1;
+        $empleado->sector = "cocina";
+        $respuesta = $comanda->crearComanda($empleado);
         if ($respuesta) {
           $comanda->id = $respuesta;
           array_push($comandas, $comanda);
@@ -176,7 +178,7 @@ class ComandaController extends Comanda implements IApiUsable
       $f = fopen('CSV/comandas_'.$tiempoAhora.'.csv', 'w');
         $data = Comanda::obtenerTodos();
         if(count($data)>0){
-          fwrite($f, "id,fecha_creacion,mesa,nombre_cliente,estado,tiempo_preparacion");
+          fwrite($f, "id,fecha_creacion,mesa,nombre_cliente,estado,");
           for ($i=0; $i < 10; $i++) { 
             fwrite($f,"pedidos".$i."nombre,pedidos".$i."cantidad,pedidos".$i."tipo,pedidos".$i."precio");
           }

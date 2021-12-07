@@ -1,6 +1,3 @@
-fecha_creacion,mesa,nombre_cliente,estado,tiempo_preparacion,pedidos0nombre,pedidos0cantidad,pedidos0tipo,pedidos0precio,pedidos1nombre,pedidos1cantidad,pedidos1tipo,pedidos1precio
-2021-11-15 22:11:36,4a78d,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350
-2021-11-15 22:11:36,ac8da,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350
-2021-11-15 22:11:36,3c5d8,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350
-2021-11-15 22:11:36,4f66a,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350
-2021-11-15 22:11:36,80eda,pepito,Pendiente,40,Cerveza,2,bebida,220,Papas,1,comida,350
+fecha_creacion,mesa,nombre_cliente,estado,pedidos0nombre,pedidos0cantidad,pedidos0tipo,pedidos0precio,pedidos1nombre,pedidos1cantidad,pedidos1tipo,pedidos1precio
+2021-11-15 22:11:36,4a78d,pepito,Pendiente,Corona,2,bebida,220,Asado,1,comida,350
+2021-11-15 22:11:36,ac8da,pepito,Pendiente,Corona,2,bebida,220,Asado,1,comida,350
